@@ -77,16 +77,16 @@ export const constantRoutes = [
  */
 export const asyncRoutes = [
   {
-    path: '/dicom',
+    path: '/active',
     component: Layout,
-    redirect: '/dicom/index',
-    name: 'dicom',
+    redirect: '/active/index',
+    name: 'active',
     children: [
       {
         path: 'index',
-        name: 'dicomIndex',
-        component: () => import('@/views/dicom/index'),
-        meta: { title: '影像分析', icon: 'table',permission:'imageologyOrder:view'}
+        name: 'activeIndex',
+        component: () => import('@/views/active/index'),
+        meta: { title: '激活记录', icon: 'table'}
       },
       {
         path: 'show/:orderNo',
@@ -99,29 +99,31 @@ export const asyncRoutes = [
   },
 
   {
-    path: '/financial',
+    path: '/activeCode',
     component: Layout,
-    name: 'financial',
+    name: 'activeCode',
+    redirect: '/activeCode/index',
     children: [
       {
         path: 'index',
-        name: 'financialIndex',
-        component: () => import('@/views/financial/index'),
-        meta: { title: '财务中心', icon: 'form',permission:'userWallet:view'}
+        name: 'activeCodeIndex',
+        component: () => import('@/views/activeCode/index'),
+        meta: { title: '激活码', icon: 'form'}
       }
     ]
   },
   {
-    path: '/team',
+    path: '/agent',
     component: Layout,
-    name: 'team',
+    name: 'agent',
+    redirect: '/agent/index',
     children: [
       {
         path: 'index',
-        name: 'teamIndex',
-        component: () => import('@/views/team/index'),
+        name: 'agentIndex',
+        component: () => import('@/views/agent/index'),
         meta: {
-          title: '团队管理', icon: 'user',permission:'user:view'
+          title: '代理管理', icon: 'user'
         }
       }
     ]
@@ -226,6 +228,7 @@ export function filterAsyncRoutesByPermission(asyncRoutes, permissions) {
 export function getRoutes() {
   const permissions = getPermissions()?getPermissions():[]
   const accessedRoutes = filterAsyncRoutesByPermission(asyncRoutes, permissions)
+  localStorage.setItem('accessRoutes',JSON.stringify(accessedRoutes))
   const routes =  constantRoutes.concat(accessedRoutes)
   return routes
 }

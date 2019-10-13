@@ -6,7 +6,7 @@
           <div class="card-header">
             <el-row :gutter="20">
               <el-col :span="12">
-                <div class="tll">阅片统计</div>
+                <div class="tll">激活数</div>
               </el-col>
               <el-col :span="12">
 
@@ -25,8 +25,8 @@
                     <span class="fg">|</span>
                     <span class="nb">{{dayVerifyCount}}</span>
                   </div>
-                  <span class="ttm">今日</span>
-                  <label>阅片 / 审核(个)</label>
+<!--                  <span class="ttm">今日</span>-->
+                  <label>总激活数</label>
                 </el-card>
               </el-col>
               <el-col :md="12" :lg="8">
@@ -39,8 +39,8 @@
                     <span class="fg">|</span>
                     <span class="nb">{{weekVerifyCount}}</span>
                   </div>
-                  <span class="ttm">本周</span>
-                  <label>阅片 / 审核(个)</label>
+<!--                  <span class="ttm">本周</span>-->
+                  <label>今日激活数</label>
                 </el-card>
               </el-col>
               <el-col :md="12" :lg="8">
@@ -53,8 +53,8 @@
                     <span class="fg">|</span>
                     <span class="nb">{{monthVerifyCount}}</span>
                   </div>
-                  <span class="ttm">本月</span>
-                  <label>阅片 / 审核(个)</label>
+<!--                  <span class="ttm">本月</span>-->
+                  <label>代理激活数</label>
                 </el-card>
               </el-col>
             </el-row>
@@ -90,26 +90,26 @@
             <div>
               <el-row :gutter="20">
                 <el-col :span="8">
-                  <router-link to="/dicom/index">
+                  <router-link to="/active/index">
                   <div class="gz-btn">
                     <div class="ico"><i class="iconfont icon-table"></i></div>
-                    <div class="txt">影像中心</div>
+                    <div class="txt">激活记录</div>
                   </div>
                   </router-link>
                 </el-col>
                 <el-col :span="8">
-                  <router-link to="/financial/index">
+                  <router-link to="/activeCode/index">
                   <div class="gz-btn">
                     <div class="ico"><i class="iconfont icon-form"></i></div>
-                    <div class="txt">财务中心</div>
+                    <div class="txt">激活码</div>
                   </div>
                   </router-link>
                 </el-col>
                 <el-col :span="8">
-                  <router-link to="/info/index">
+                  <router-link to="/agent/index">
                   <div class="gz-btn">
                     <div class="ico"><i class="iconfont icon-user"></i></div>
-                    <div class="txt">个人资料</div>
+                    <div class="txt">代理管理</div>
                   </div>
                   </router-link>
                 </el-col>
