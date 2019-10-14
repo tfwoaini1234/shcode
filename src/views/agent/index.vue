@@ -1,9 +1,9 @@
 <template>
   <div class="main-box">
-    <div class="page-title" v-if="false">
+    <div class="page-title" >
       <el-row :gutter="20">
         <el-col :span="16">
-          <div class="grid-content bg-purple">影像分析</div>
+          <div class="grid-content bg-purple">代理管理</div>
         </el-col>
         <el-col :span="8">
           <div class="grid-content bg-purple align-right">
@@ -12,6 +12,7 @@
         </el-col>
       </el-row>
     </div>
+
     <el-tabs v-model="activeName" type="card" @tab-click="handleTabClick">
 
       <el-tab-pane label="代理列表" name="0">
@@ -69,6 +70,7 @@
     },
 
     methods: {
+
       changeType(tab){
         this.activeType = tab
         this.$refs['listTypeItem'+tab].fetatchLoad()

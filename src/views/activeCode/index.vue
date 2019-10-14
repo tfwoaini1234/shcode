@@ -1,49 +1,23 @@
 <template>
   <div class="main-box">
-    <div class="page-title" v-if="false">
+    <div class="page-title">
       <el-row :gutter="20">
         <el-col :span="16">
-          <div class="grid-content bg-purple">影像分析</div>
+          <div class="grid-content bg-purple">激活码</div>
         </el-col>
         <el-col :span="8">
           <div class="grid-content bg-purple align-right">
-            &nbsp;
           </div>
         </el-col>
       </el-row>
     </div>
     <el-tabs v-model="activeName" type="card" @tab-click="handleTabClick">
-
-      <el-tab-pane label="所有激活码" name="0">
+      <el-tab-pane label="激活码列表" name="0">
         <dicom-list ref="listItem1" status="20,30,40"></dicom-list>
       </el-tab-pane>
-<!--      <el-tab-pane label="所有激活码" name="1">-->
-<!--        <el-row>-->
-<!--          <el-col>-->
-<!--            <ul class="btns-box">-->
-<!--              <li @click="changeType('0')">-->
-<!--                <div class="item" v-bind:class="activeType=='0'?'active':''">-->
-<!--                  <span class="icon"><i class="iconfont icon-shenhe"></i></span>-->
-<!--                  <span class="title">待阅片</span>-->
-<!--                  <span v-if="readCount>0" class="count">{{readCount}}</span>-->
-<!--                </div>-->
-<!--              </li>-->
-<!--              <li @click="changeType('1')">-->
-<!--                <div class="item" v-bind:class="activeType=='1'?'active':''">-->
-<!--                  <span class="icon"><i class="iconfont icon-shenhe1"></i></span>-->
-<!--                  <span class="title">待审核</span>-->
-<!--                  <span v-if="reviewCount>0" class="count">{{reviewCount}}</span>-->
-<!--                </div>-->
-<!--              </li>-->
-<!--            </ul>-->
-<!--          </el-col>-->
-<!--        </el-row>-->
-<!--        <div style="margin-top: 10px;">-->
-<!--          <dicom-type-list :pendType="1"  v-show="activeType=='0'" @load="readOnLoad" ref="listTypeItem0"></dicom-type-list>-->
-<!--          <dicom-type-list :pendType="2" v-show="activeType=='1'" @load="reviewOnLoad" ref="listTypeItem1"></dicom-type-list>-->
-<!--        </div>-->
-
-<!--      </el-tab-pane>-->
+      <el-tab-pane label="激活码设置" name="1">
+        <setting ref="listItem2" status="20,30,40"></setting>
+      </el-tab-pane>
     </el-tabs>
   </div>
 </template>
@@ -51,13 +25,15 @@
 <script>
   import { mapGetters } from 'vuex'
   import DicomList from './components/DicomList'
+  import Setting from './components/Setting'
   import DicomTypeList from "./components/DicomTypeList";
 
   export default {
 
     components:{
       DicomTypeList,
-      DicomList
+      DicomList,
+        Setting
     },
     data() {
       return {

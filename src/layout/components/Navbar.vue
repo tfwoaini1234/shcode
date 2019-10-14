@@ -2,29 +2,10 @@
   <div class="navbar">
     <hamburger :is-active="sidebar.opened" class="hamburger-container" @toggleClick="toggleSideBar" />
 
-    <div class="breadcrumb-container">业务端</div>
+    <div class="breadcrumb-container">总后台</div>
 
     <div class="right-menu">
       <ul class="header-operations">
-        <li class="item">
-          <el-dropdown trigger="click" placement="bottom"  @command="msgClick">
-             <span class="el-dropdown-link">
-                <i class="iconfont icon-xinxi notice-icon"></i>
-                <el-badge v-if="msgList.length>0" class="mark" :value="msgList.length" />
-             </span>
-            <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item command="id" v-if="msgList.length>0" :key="n" v-for="(item,n) in msgList">[{{item.type==1?'系统消息':'业务消息'}}]{{item.title}}</el-dropdown-item>
-              <el-dropdown-item command="empty" v-if="msgList.length==0" style="color: #aaaaaa">暂无未读消息</el-dropdown-item>
-              <el-dropdown-item command="all" divided style="text-align: center">查看全部消息</el-dropdown-item>
-            </el-dropdown-menu>
-          </el-dropdown>
-        </li>
-        <li class="item">
-          <el-divider class="item" direction="vertical"></el-divider>
-        </li>
-        <li class="item">
-          <router-link to="/info/team">{{hospitalName}}</router-link>
-        </li>
         <li class="item">
           <el-divider class="item" direction="vertical"></el-divider>
         </li>
@@ -33,25 +14,12 @@
             <div class="avatar-wrapper">
               <el-avatar class="avatar" :size="34">
                 <span slot="default">
-                  <img v-if="avatar && avatar!=''" width="100%" :src="avatar"/>
-                  <img v-else src="@/assets/face.png"  width="100%" />
+                  <img  src="@/assets/logo.jpg"  width="100%" />
                 </span>
               </el-avatar>
-              <span class="user-name">
-                   {{name}}
-                 <i class="iconfont icon-caidan el-icon--right"></i>
-              </span>
             </div>
             <el-dropdown-menu slot="dropdown" class="user-dropdown">
-              <router-link to="/info/index">
-                <el-dropdown-item>
-                  个人中心
-                </el-dropdown-item>
-              </router-link>
-              <router-link to="/setting/index">
-                <el-dropdown-item>系统设置</el-dropdown-item>
-              </router-link>
-              <el-dropdown-item divided>
+              <el-dropdown-item >
                 <span style="display:block;" @click="logout">退出系统</span>
               </el-dropdown-item>
             </el-dropdown-menu>

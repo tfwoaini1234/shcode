@@ -7,6 +7,20 @@
             <el-input v-model="search.patientName"  placeholder="激活码">
             </el-input>
           </el-form-item>
+          <el-form-item>
+            <el-select v-model="search.type" style="width: 100px" placeholder="使用情况" >
+              <el-option  label="已使用" value="1"></el-option>
+              <el-option  label="未使用" value="2"></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item>
+            <el-select v-model="search.type" style="width: 100px" placeholder="类型" >
+              <el-option  label="周卡" value="1"></el-option>
+              <el-option  label="月卡" value="2"></el-option>
+              <el-option  label="季卡" value="3"></el-option>
+              <el-option  label="年卡" value="4"></el-option>
+            </el-select>
+          </el-form-item>
         </el-form>
       </el-col>
     </el-row>
@@ -23,7 +37,7 @@
       cell-class-name="table-cell"
     >
 
-      <el-table-column align="center" label="激活码">
+      <el-table-column align="center" label="姓名">
         <template slot-scope="scope">
           {{ scope.row.patientName }}
         </template>
@@ -42,8 +56,9 @@
         fixed="right"
         align="center"
         label="操作"
-        width="100">
+        width="200">
         <template slot-scope="scope">
+          <el-button @click="openEdit(scope.row)" type="text" size="small">编辑</el-button>
           <el-button @click="openDelete(scope.row)" type="text" size="small">删除</el-button>
         </template>
       </el-table-column>
@@ -72,7 +87,6 @@
 <script>
     import { getList } from '@/api/active'
     import Tools from '@/utils/tools'
-
     export default {
         name: "List",
         props:{
@@ -86,6 +100,9 @@
         },
         data(){
             return {
+                showAdd:false,
+                showEdit:false,
+                item:{},
                 search:{
 
                 },
@@ -108,6 +125,19 @@
             //this.fetchData()
         },
         methods:{
+            showAddHandel(){
+                this.showAdd = true;
+            },
+            handleClose(done){
+                done()
+            },
+            handleCommand(value){
+                let data={};
+
+                addCode(data).then(response => {
+                    this.$message('新增成功')
+                })
+            },
             openDelete(row){
                 alert("删除了")
             },
@@ -147,7 +177,8 @@
                 this.searchData()
             },
             openEdit(row) {
-                this.$router.push({ path:'/dicom/show/'+row.orderNo})
+                this.showEdit = true;
+                this.item = row;
             }
         },
         computed: {

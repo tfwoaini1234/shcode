@@ -129,16 +129,15 @@ export const asyncRoutes = [
     ]
   },
   {
-    path: '/info',
+    path: '/recharge',
     component: Layout,
-    name: 'info',
+    name: 'recharge',
     children: [
       {
         path: 'index',
         name: 'infoIndex',
-        hidden: true,
-        component: () => import('@/views/info/index'),
-        meta: { title: '基础资料', icon: 'user' }
+        component: () => import('@/views/recharge/index'),
+        meta: { title: '充值', icon: 'example' }
       },
       {
         path: 'team',
@@ -164,6 +163,7 @@ export const asyncRoutes = [
       {
         path: 'index',
         name: 'messageIndex',
+        hidden: true,
         component: () => import('@/views/message/index'),
         meta: { title: '消息中心', icon: 'message' }
       },
