@@ -1,10 +1,5 @@
 <template>
   <div>
-    <div style="margin-bottom:20px;">
-        <el-button type="primary">
-          导出
-        </el-button>
-    </div>
     <el-row>
       <el-col :span="24">
         <el-form :inline="true" class="demo-form-inline" :size="this.GLOBAL.listSize()">
@@ -13,10 +8,10 @@
             </el-input>
           </el-form-item>
           <el-form-item>
-              <el-select v-model="search.type" style="width: 100px" placeholder="使用情况" >
-                <el-option  label="已使用" value="1"></el-option>
-                <el-option  label="未使用" value="2"></el-option>
-              </el-select>
+            <el-select v-model="search.type" style="width: 100px" placeholder="使用情况" >
+              <el-option  label="已使用" value="1"></el-option>
+              <el-option  label="未使用" value="2"></el-option>
+            </el-select>
           </el-form-item>
           <el-form-item>
             <el-select v-model="search.type" style="width: 100px" placeholder="类型" >
@@ -42,17 +37,18 @@
       cell-class-name="table-cell"
     >
 
-      <el-table-column align="center" label="激活码">
+      <el-table-column align="center" label="转账账号">
         <template slot-scope="scope">
           {{ scope.row.patientName }}
         </template>
       </el-table-column>
-      <el-table-column align="center"  label="激活账号">
+      <el-table-column align="center"  label="转账金额">
         <template slot-scope="scope">
           {{ scope.row.orderNo }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="激活时间" width="300">
+
+      <el-table-column align="center" label="转账时间" width="300">
         <template slot-scope="scope">
           {{ scope.row.addTime }}
         </template>
@@ -61,8 +57,9 @@
         fixed="right"
         align="center"
         label="操作"
-        width="100">
+        width="200">
         <template slot-scope="scope">
+          <el-button @click="openEdit(scope.row)" type="text" size="small">编辑</el-button>
           <el-button @click="openDelete(scope.row)" type="text" size="small">删除</el-button>
         </template>
       </el-table-column>
@@ -89,9 +86,8 @@
 </template>
 
 <script>
-    import { getList } from '@/api/activeCode'
+    import { getList } from '@/api/active'
     import Tools from '@/utils/tools'
-
     export default {
         name: "List",
         props:{
@@ -105,6 +101,9 @@
         },
         data(){
             return {
+                showAdd:false,
+                showEdit:false,
+                item:{},
                 search:{
 
                 },
@@ -127,6 +126,12 @@
             //this.fetchData()
         },
         methods:{
+            showAddHandel(){
+                this.showAdd = true;
+            },
+            handleClose(done){
+                done()
+            },
             handleCommand(value){
                 let data={};
 
@@ -173,7 +178,8 @@
                 this.searchData()
             },
             openEdit(row) {
-                this.$router.push({ path:'/dicom/show/'+row.orderNo})
+                this.showEdit = true;
+                this.item = row;
             }
         },
         computed: {

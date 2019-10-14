@@ -2,7 +2,7 @@
   <div class="navbar">
     <hamburger :is-active="sidebar.opened" class="hamburger-container" @toggleClick="toggleSideBar" />
 
-    <div class="breadcrumb-container">总后台</div>
+    <div class="breadcrumb-container">代理后台</div>
 
     <div class="right-menu">
       <ul class="header-operations">

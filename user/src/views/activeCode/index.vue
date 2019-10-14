@@ -15,9 +15,9 @@
       <el-tab-pane label="激活码列表" name="0">
         <dicom-list ref="listItem1" status="20,30,40"></dicom-list>
       </el-tab-pane>
-      <el-tab-pane label="激活码设置" name="1">
-        <setting ref="listItem2" status="20,30,40"></setting>
-      </el-tab-pane>
+<!--      <el-tab-pane label="激活码设置" name="1">-->
+<!--        <setting ref="listItem2" status="20,30,40"></setting>-->
+<!--      </el-tab-pane>-->
     </el-tabs>
   </div>
 </template>

@@ -1,9 +1,12 @@
 <template>
   <el-form :model="ruleForm" status-icon :rules="rules"  ref="ruleForm" :size="this.GLOBAL.formSize()" label-width="100px" class="demo-ruleForm">
-    <el-form-item label="激活账号" prop="oldpass">
+    <el-form-item label="转账账号" prop="oldpass">
       <el-input type="password" v-model="ruleForm.mobile" autocomplete="off"></el-input>
     </el-form-item>
-    <el-form-item label="激活码" prop="newPass">
+    <el-form-item label="余额" prop="newPass">
+      <label>123.00</label>
+    </el-form-item>
+    <el-form-item label="转账金额" prop="newPass">
       <el-input type="password" v-model="ruleForm.amount" autocomplete="off"></el-input>
     </el-form-item>
     <el-form-item>

@@ -1,13 +1,18 @@
 <template>
   <el-form :model="ruleForm" status-icon :rules="rules"  ref="ruleForm" :size="this.GLOBAL.formSize()" label-width="100px" class="demo-ruleForm">
-    <el-form-item label="激活账号" prop="oldpass">
-      <el-input type="password" v-model="ruleForm.mobile" autocomplete="off"></el-input>
+    <el-form-item label="激活码类型" prop="oldpass">
+      <el-select v-model="ruleForm.type" placeholder="请选择">
+        <el-option label="周卡" value="1" > </el-option>
+        <el-option label="月卡" value="2" > </el-option>
+        <el-option label="季卡" value="3" > </el-option>
+        <el-option label="年卡" value="4" > </el-option>
+      </el-select>
     </el-form-item>
-    <el-form-item label="激活码" prop="newPass">
-      <el-input type="password" v-model="ruleForm.amount" autocomplete="off"></el-input>
+    <el-form-item label="激活码价格" prop="newPass">
+      <label>123.00</label>
     </el-form-item>
     <el-form-item>
-      <el-button type="primary" @click="submitForm('ruleForm')">激活</el-button>
+      <el-button type="primary" @click="submitForm('ruleForm')">购买</el-button>
     </el-form-item>
   </el-form>
 </template>

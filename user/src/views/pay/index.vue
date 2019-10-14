@@ -3,7 +3,7 @@
     <div class="page-title">
       <el-row :gutter="20">
         <el-col :span="16">
-          <div class="grid-content bg-purple">激活</div>
+          <div class="grid-content bg-purple">转账</div>
         </el-col>
         <el-col :span="8">
           <div class="grid-content bg-purple align-right">
@@ -13,14 +13,14 @@
     </div>
     <div>
       <el-tabs v-model="activeName" type="card">
-        <el-tab-pane label="激活" name="first">
+        <el-tab-pane label="转账" name="first">
           <el-row :gutter="20">
             <el-col :span="12">
               <add-amount></add-amount>
             </el-col>
           </el-row>
         </el-tab-pane>
-        <el-tab-pane label="激活记录" name="second">
+        <el-tab-pane label="转账记录" name="second">
               <list></list>
         </el-tab-pane>
       </el-tabs>

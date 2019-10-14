@@ -90,36 +90,36 @@
             <div>
               <el-row :gutter="20">
                 <el-col :span="8">
-                  <router-link to="/active/index">
-                  <div class="gz-btn">
-                    <div class="ico"><i class="iconfont icon-table"></i></div>
-                    <div class="txt">激活记录</div>
-                  </div>
-                  </router-link>
-                </el-col>
-                <el-col :span="8">
                   <router-link to="/activeCode/index">
                   <div class="gz-btn">
-                    <div class="ico"><i class="iconfont icon-form"></i></div>
+                    <div class="ico"><i class="iconfont icon-table"></i></div>
                     <div class="txt">激活码</div>
                   </div>
                   </router-link>
                 </el-col>
                 <el-col :span="8">
-                  <router-link to="/agent/index">
+                  <router-link to="/recharge/index">
+                  <div class="gz-btn">
+                    <div class="ico"><i class="iconfont icon-form"></i></div>
+                    <div class="txt">激活</div>
+                  </div>
+                  </router-link>
+                </el-col>
+                <el-col :span="8">
+                  <router-link to="/pay/index">
                   <div class="gz-btn">
                     <div class="ico"><i class="iconfont icon-user"></i></div>
-                    <div class="txt">代理管理</div>
+                    <div class="txt">转账</div>
                   </div>
                   </router-link>
                 </el-col>
               </el-row>
               <el-row :gutter="20">
                 <el-col :span="8">
-                  <router-link to="/recharge/index">
+                  <router-link to="/buy/index">
                   <div class="gz-btn">
                     <div class="ico"><i class="iconfont icon-shezhi"></i></div>
-                    <div class="txt">充值</div>
+                    <div class="txt">购买</div>
                   </div>
                   </router-link>
                 </el-col>

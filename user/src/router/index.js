@@ -85,6 +85,7 @@ export const asyncRoutes = [
       {
         path: 'index',
         name: 'activeIndex',
+        hidden:true,
         component: () => import('@/views/active/index'),
         meta: { title: '激活记录', icon: 'table'}
       },
@@ -121,6 +122,7 @@ export const asyncRoutes = [
       {
         path: 'index',
         name: 'agentIndex',
+        hidden:true,
         component: () => import('@/views/agent/index'),
         meta: {
           title: '代理管理', icon: 'user'
@@ -137,21 +139,33 @@ export const asyncRoutes = [
         path: 'index',
         name: 'infoIndex',
         component: () => import('@/views/recharge/index'),
-        meta: { title: '充值', icon: 'example' }
+        meta: { title: '激活', icon: 'example' }
       },
+    ]
+  },
+  {
+    path: '/pay',
+    component: Layout,
+    name: 'pay',
+    children: [
       {
-        path: 'team',
-        name: 'infoTeam',
-        hidden: true,
-        component: () => import('@/views/info/team'),
-        meta: { title: '团队资料', icon: 'user' }
+        path: 'index',
+        name: 'infoIndex',
+        component: () => import('@/views/pay/index'),
+        meta: { title: '转账', icon: 'example' }
       },
+    ]
+  },
+  {
+    path: '/buy',
+    component: Layout,
+    name: 'buy',
+    children: [
       {
-        path: 'check/:id',
-        name: 'checkInfo',
-        hidden: true,
-        component: () => import('@/views/info/check'),
-        meta: { title: '基础资料', icon: 'user' }
+        path: 'index',
+        name: 'infoIndex',
+        component: () => import('@/views/buy/index'),
+        meta: { title: '购买', icon: 'example' }
       },
     ]
   },

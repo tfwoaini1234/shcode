@@ -37,12 +37,12 @@
       cell-class-name="table-cell"
     >
 
-      <el-table-column align="center" label="姓名">
+      <el-table-column align="center" label="激活账号">
         <template slot-scope="scope">
           {{ scope.row.patientName }}
         </template>
       </el-table-column>
-      <el-table-column align="center"  label="激活账号">
+      <el-table-column align="center"  label="激活码">
         <template slot-scope="scope">
           {{ scope.row.orderNo }}
         </template>
