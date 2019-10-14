@@ -116,18 +116,10 @@
               </el-row>
               <el-row :gutter="20">
                 <el-col :span="8">
-                  <router-link to="/setting/index">
+                  <router-link to="/recharge/index">
                   <div class="gz-btn">
                     <div class="ico"><i class="iconfont icon-shezhi"></i></div>
-                    <div class="txt">系统设置</div>
-                  </div>
-                  </router-link>
-                </el-col>
-                <el-col :span="8">
-                  <router-link to="/message/index">
-                  <div class="gz-btn">
-                    <div class="ico"><i class="iconfont icon-xiaoxi-mian"></i></div>
-                    <div class="txt">消息中心</div>
+                    <div class="txt">充值</div>
                   </div>
                   </router-link>
                 </el-col>
