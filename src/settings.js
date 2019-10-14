@@ -1,6 +1,6 @@
 module.exports = {
 
-  title: '青耕鸟TCS-业务端',
+  title: '云尚清粉',
 
   /**
    * @type {boolean} true | false
