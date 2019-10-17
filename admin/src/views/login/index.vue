@@ -135,9 +135,14 @@
       handleLogin() {
         this.$refs.loginForm.validate(valid => {
           if (valid) {
-
               login(this.loginForm).then((r)=>{
                   console.log(r)
+                  if(r.code == 200){
+                      localStorage.setItem('userInfo',JSON.stringify(r.data))
+                      this.$router.push('/')
+                  }else{
+                      this.$message.warning('账号密码错误');
+                  }
               })
           } else {
             console.log('error submit!!')

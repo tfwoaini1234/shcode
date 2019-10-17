@@ -62,8 +62,8 @@
       toggleSideBar() {
         this.$store.dispatch('app/toggleSideBar')
       },
-      async logout() {
-        await this.$store.dispatch('user/logout')
+      logout() {
+        localStorage.clear();
         this.$router.push(`/login?redirect=${this.$route.fullPath}`)
       },
       // webSocketMessage() {

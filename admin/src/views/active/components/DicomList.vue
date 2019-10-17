@@ -4,8 +4,11 @@
       <el-col :span="24">
         <el-form :inline="true" class="demo-form-inline" :size="this.GLOBAL.listSize()">
           <el-form-item>
-            <el-input v-model="search.patientName"  placeholder="激活码">
+            <el-input v-model="search.cipher"  placeholder="激活码">
             </el-input>
+          </el-form-item>
+          <el-form-item>
+            <el-button style="height: 28px;line-height: 13px" round @click="searchData">搜索</el-button>
           </el-form-item>
         </el-form>
       </el-col>
@@ -87,7 +90,7 @@
         data(){
             return {
                 search:{
-
+                    cipher:''
                 },
                 page:{
                     size:this.GLOBAL.pageSize(),

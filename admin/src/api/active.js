@@ -6,7 +6,7 @@ import request from '@/utils/request'
  */
 export function getList(params) {
   return request({
-    url: '/active/imageology-order',
+    url: '/admin/activeList',
     method: 'get',
     params
   })

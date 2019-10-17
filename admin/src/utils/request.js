@@ -25,7 +25,7 @@ service.interceptors.request.use(
       config.headers['Authentication'] = getToken()
     }
     config.headers['Content-Type'] = 'application/x-www-form-urlencoded'
-    config.headers['platform'] = 'DOCTOR'
+    //config.headers['platform'] = 'DOCTOR'
 
     return config
   },
