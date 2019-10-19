@@ -6,10 +6,7 @@
           新增<i class="el-icon-arrow-down el-icon--right"></i>
         </el-button>
         <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item command="1">周卡激活码</el-dropdown-item>
-          <el-dropdown-item command="2">月卡激活码</el-dropdown-item>
-          <el-dropdown-item command="3">季卡激活码</el-dropdown-item>
-          <el-dropdown-item command="4">年卡激活码</el-dropdown-item>
+          <el-dropdown-item v-for="(item,index) in typeList" :command="item.id" :key="index" >{{item.name}}激活码</el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
     </div>
@@ -17,22 +14,11 @@
       <el-col :span="24">
         <el-form :inline="true" class="demo-form-inline" :size="this.GLOBAL.listSize()">
           <el-form-item>
-            <el-input v-model="search.patientName"  placeholder="激活码">
+            <el-input v-model="search.cipher"  placeholder="激活码">
             </el-input>
           </el-form-item>
           <el-form-item>
-              <el-select v-model="search.type" style="width: 100px" placeholder="使用情况" >
-                <el-option  label="已使用" value="1"></el-option>
-                <el-option  label="未使用" value="2"></el-option>
-              </el-select>
-          </el-form-item>
-          <el-form-item>
-            <el-select v-model="search.type" style="width: 100px" placeholder="类型" >
-              <el-option  label="周卡" value="1"></el-option>
-              <el-option  label="月卡" value="2"></el-option>
-              <el-option  label="季卡" value="3"></el-option>
-              <el-option  label="年卡" value="4"></el-option>
-            </el-select>
+            <el-button style="height: 28px;line-height: 13px" round @click="searchData">搜索</el-button>
           </el-form-item>
         </el-form>
       </el-col>
@@ -52,28 +38,59 @@
 
       <el-table-column align="center" label="激活码">
         <template slot-scope="scope">
-          {{ scope.row.patientName }}
+          {{ scope.row.cipher }}
         </template>
       </el-table-column>
-      <el-table-column align="center"  label="激活账号">
+      <el-table-column align="center"  label="激活码类型">
         <template slot-scope="scope">
-          {{ scope.row.orderNo }}
+          {{getTypeName(scope.row.type)}}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="激活时间" width="300">
+      <el-table-column align="center"  label="是否激活">
         <template slot-scope="scope">
-          {{ scope.row.addTime }}
+          {{ scope.row.isActive?'激活':'未激活' }}
         </template>
       </el-table-column>
-      <el-table-column
-        fixed="right"
-        align="center"
-        label="操作"
-        width="100">
+      <el-table-column align="center"  label="是否销售">
         <template slot-scope="scope">
-          <el-button @click="openDelete(scope.row)" type="text" size="small">删除</el-button>
+          {{ scope.row.isSale?'销售':'未销售' }}
         </template>
       </el-table-column>
+      <el-table-column align="center"  label="代理人">
+        <template slot-scope="scope">
+          {{getUserName(scope.row.proxyId)}}
+        </template>
+      </el-table-column>
+      <el-table-column align="center"  label="绑定人">
+        <template slot-scope="scope">
+          {{getUserName(scope.row.bindId)}}
+        </template>
+      </el-table-column>
+      <el-table-column align="center"  label="有效期">
+        <template slot-scope="scope">
+          {{ scope.row.activeDays }}
+        </template>
+      </el-table-column>
+      <el-table-column align="center" label="销售时间" >
+        <template slot-scope="scope">
+          {{ scope.row.saleTime }}
+        </template>
+      </el-table-column>
+      <el-table-column align="center" label="激活时间" >
+        <template slot-scope="scope">
+          {{ scope.row.activeTime }}
+        </template>
+      </el-table-column>
+
+<!--      <el-table-column-->
+<!--        fixed="right"-->
+<!--        align="center"-->
+<!--        label="操作"-->
+<!--        width="100">-->
+<!--        <template slot-scope="scope">-->
+<!--          <el-button @click="openDelete(scope.row)" type="text" size="small">删除</el-button>-->
+<!--        </template>-->
+<!--      </el-table-column>-->
     </el-table>
     <el-row>
       <el-col :span="24">
@@ -97,7 +114,7 @@
 </template>
 
 <script>
-    import { getList } from '@/api/activeCode'
+    import { getCodeList,getList,addCode,getUserList } from '@/api/activeCode'
     import Tools from '@/utils/tools'
 
     export default {
@@ -113,6 +130,8 @@
         },
         data(){
             return {
+                typeList:[],
+                userList:[],
                 search:{
 
                 },
@@ -132,14 +151,54 @@
 
         },
         mounted(){
-            //this.fetchData()
+            this.getList()
+            this.getUserList()
+            this.fetchData()
         },
         methods:{
+            getUserList(){
+                getUserList().then((r)=>{
+                    this.userList = r.records
+                })
+            },
+            getUserName(id){
+                for(var k in this.userList){
+                    let item = this.userList[k]
+                    if(item.id == id){
+                        return item.name
+                    }
+                }
+                return '未知'
+            },
+            getTypeName(id){
+                for(var k in this.typeList){
+                    let item = this.typeList[k]
+                    if(item.id == id){
+                        return item.name
+                    }
+                }
+                return '未知'
+            },
+            getList(){
+                getList().then((r)=>{
+                    const {records} = r
+                    this.typeList = records
+                })
+            },
             handleCommand(value){
-                let data={};
+                let userInfo = JSON.parse(localStorage.getItem('userInfo'))
+                let data={
+                    adminId:userInfo.id,
+                    typeId:value
+                };
 
                 addCode(data).then(response => {
-                    this.$message('新增成功')
+                    if(response.code == 200){
+                        this.$message('新增成功')
+                        this.fetchData()
+                    }else{
+                        this.$message(response.message)
+                    }
                 })
             },
             openDelete(row){
@@ -154,8 +213,9 @@
                 if(search){
                     Object.assign(param,search)
                 }
-                getList(param).then(response => {
+                getCodeList(param).then(response => {
                     const {records,total,size,current,searchCount,pages}  = response
+                    console.log(total)
                     this.page.total =total
                     this.list = records
                     this.listLoading = false

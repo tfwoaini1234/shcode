@@ -10,22 +10,11 @@
       <el-col :span="24">
         <el-form :inline="true" class="demo-form-inline" :size="this.GLOBAL.listSize()">
           <el-form-item>
-            <el-input v-model="search.patientName"  placeholder="激活码">
+            <el-input v-model="search.mobile"  placeholder="手机号">
             </el-input>
           </el-form-item>
           <el-form-item>
-            <el-select v-model="search.type" style="width: 100px" placeholder="使用情况" >
-              <el-option  label="已使用" value="1"></el-option>
-              <el-option  label="未使用" value="2"></el-option>
-            </el-select>
-          </el-form-item>
-          <el-form-item>
-            <el-select v-model="search.type" style="width: 100px" placeholder="类型" >
-              <el-option  label="周卡" value="1"></el-option>
-              <el-option  label="月卡" value="2"></el-option>
-              <el-option  label="季卡" value="3"></el-option>
-              <el-option  label="年卡" value="4"></el-option>
-            </el-select>
+            <el-button style="height: 28px;line-height: 13px" round @click="searchData">搜索</el-button>
           </el-form-item>
         </el-form>
       </el-col>
@@ -35,9 +24,10 @@
       title="新增用户"
       :visible.sync="showAdd"
       direction="rtl"
+
       :before-close="handleClose">
       <div>
-        <add :parent="this" ></add>
+        <add @success="addSuccess" :parent="this" ></add>
       </div>
     </el-drawer>
     <el-drawer
@@ -63,19 +53,19 @@
       cell-class-name="table-cell"
     >
 
-      <el-table-column align="center" label="姓名">
+      <el-table-column align="center" label="用户名">
         <template slot-scope="scope">
-          {{ scope.row.patientName }}
+          {{ scope.row.nickname }}
         </template>
       </el-table-column>
-      <el-table-column align="center"  label="激活账号">
+      <el-table-column align="center" label="手机号">
         <template slot-scope="scope">
-          {{ scope.row.orderNo }}
+          {{ scope.row.mobile }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="激活时间" width="300">
+      <el-table-column align="center" label="账户余额">
         <template slot-scope="scope">
-          {{ scope.row.addTime }}
+          {{ scope.row.money }}
         </template>
       </el-table-column>
       <el-table-column
@@ -84,7 +74,7 @@
         label="操作"
         width="200">
         <template slot-scope="scope">
-          <el-button @click="openEdit(scope.row)" type="text" size="small">编辑</el-button>
+<!--          <el-button @click="openEdit(scope.row)" type="text" size="small">编辑</el-button>-->
           <el-button @click="openDelete(scope.row)" type="text" size="small">删除</el-button>
         </template>
       </el-table-column>
@@ -111,7 +101,7 @@
 </template>
 
 <script>
-    import { getList } from '@/api/active'
+    import { getList,deleteUser } from '@/api/agent'
     import Tools from '@/utils/tools'
     import Add from './Add'
     import Edit from './Edit'
@@ -151,7 +141,7 @@
 
         },
         mounted(){
-            //this.fetchData()
+            this.fetchData()
         },
         methods:{
             showAddHandel(){
@@ -159,6 +149,9 @@
             },
             handleClose(done){
                 done()
+            },
+            addSuccess(){
+                this.fetchData()
             },
             handleCommand(value){
                 let data={};
@@ -168,7 +161,27 @@
                 })
             },
             openDelete(row){
-                alert("删除了")
+                this.$confirm('此操作将永久删除该代理, 是否继续?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    deleteUser({
+                        id:row.id
+                    }).then(response => {
+                        this.fetchData()
+                        this.$message({
+                            type: 'success',
+                            message: '删除成功!'
+                        });
+                    })
+
+                }).catch(() => {
+                    this.$message({
+                        type: 'info',
+                        message: '删除失败'
+                    });
+                });
             },
             fetchData(search) {
                 this.listLoading = true

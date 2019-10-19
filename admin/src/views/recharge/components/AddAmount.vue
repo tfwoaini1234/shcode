@@ -1,10 +1,10 @@
 <template>
   <el-form :model="ruleForm" status-icon :rules="rules"  ref="ruleForm" :size="this.GLOBAL.formSize()" label-width="100px" class="demo-ruleForm">
     <el-form-item label="充值手机号" prop="oldpass">
-      <el-input type="password" v-model="ruleForm.mobile" autocomplete="off"></el-input>
+      <el-input type="text" v-model="ruleForm.mobile" autocomplete="off"></el-input>
     </el-form-item>
     <el-form-item label="充值金额" prop="newPass">
-      <el-input type="password" v-model="ruleForm.amount" autocomplete="off"></el-input>
+      <el-input-number v-model="ruleForm.amount" autocomplete="off"></el-input-number>
     </el-form-item>
     <el-form-item>
       <el-button type="primary" @click="submitForm('ruleForm')">充值</el-button>
@@ -30,9 +30,8 @@
       };
       return {
         ruleForm: {
-          oldPass: '',
-          newPass: '',
-          checkPass: ''
+            amount:0,
+            mobile:''
         },
         rules: {
           oldPass: [
@@ -52,11 +51,26 @@
       submitForm(formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
-            let data = {
+            let user = JSON.parse(localStorage.getItem('userInfo'))
 
-            }
+              let data = this.ruleForm;
+            data.adminId = user.id
+
+              if(data.amount<=0){
+                  this.$message.error('金额输入不正确')
+                  return ;
+              }
               addAmount(data).then(r=>{
-              this.$message('修改成功')
+                  if(r.code == 200){
+                      this.$message.success('充值成功')
+                      this.ruleForm = {
+                          amount:0,
+                          mobile:''
+                      }
+                  }else{
+                      this.$message(r.message)
+                  }
+
             })
           } else {
             return false;
