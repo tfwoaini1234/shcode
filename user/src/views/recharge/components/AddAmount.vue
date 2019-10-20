@@ -1,73 +1,72 @@
 <template>
-  <el-form :model="ruleForm" status-icon :rules="rules"  ref="ruleForm" :size="this.GLOBAL.formSize()" label-width="100px" class="demo-ruleForm">
-    <el-form-item label="激活账号" prop="oldpass">
-      <el-input type="password" v-model="ruleForm.mobile" autocomplete="off"></el-input>
+  <el-form
+ref="codeForm"
+:model="codeForm"
+status-icon
+:rules="rules"
+:size="this.GLOBAL.formSize()"
+           label-width="100px"
+class="demo-ruleForm">
+    <el-form-item label="激活账号" prop="mobile">
+      <el-input v-model="codeForm.mobile" type="text" autocomplete="off"/>
     </el-form-item>
-    <el-form-item label="激活码" prop="newPass">
-      <el-input type="password" v-model="ruleForm.amount" autocomplete="off"></el-input>
+    <el-form-item label="激活码" prop="code">
+      <el-input v-model="codeForm.code" type="text" autocomplete="off"/>
     </el-form-item>
     <el-form-item>
-      <el-button type="primary" @click="submitForm('ruleForm')">激活</el-button>
+      <el-button type="primary" @click="submitForm('codeForm')">激活</el-button>
     </el-form-item>
   </el-form>
 </template>
 
 <script>
-  import {addAmount} from "@/api/recharge";
+    import { activeCode } from '@/api/activeCode'
 
-  export default {
-    name: "ChangePass",
-    data() {
-      var validatePass = (rule, value, callback) => {
-        if (value === '') {
-          callback(new Error('请输入确认密码'));
-        } else {
-          if (this.ruleForm.newPass !== this.ruleForm.checkPass) {
-            callback(new Error('两次密码不一致'));
-          }
-          callback();
-        }
-      };
-      return {
-        ruleForm: {
-          oldPass: '',
-          newPass: '',
-          checkPass: ''
-        },
-        rules: {
-          oldPass: [
-            { required: false, message: '请输入原始密码', trigger: 'blur'  }
-          ],
-          newPass: [
-            { required: false, message: '请输入新密码', trigger: 'blur' },
-            { min: 6, max: 15, message: '长度在 6 到 15 个字符', trigger: 'blur' }
-          ],
-          checkPass: [
-            { validator: validatePass, trigger: 'blur' }
-          ]
-        }
-      };
-    },
-    methods: {
-      submitForm(formName) {
-        this.$refs[formName].validate((valid) => {
-          if (valid) {
-            let data = {
-
+    export default {
+        name: 'ChangePass',
+        data() {
+            return {
+                codeForm: {
+                    mobile: '',
+                    code: '',
+                    proxyId: 0
+                },
+                rules: {
+                    mobile: [
+                        { required: false, message: '请输入帐号', trigger: 'blur' }
+                    ],
+                    code: [
+                        { required: false, message: '请输入激活码', trigger: 'blur' }
+                    ]
+                }
             }
-              addAmount(data).then(r=>{
-              this.$message('修改成功')
-            })
-          } else {
-            return false;
-          }
-        });
-      },
-      resetForm(formName) {
-        this.$refs[formName].resetFields();
-      }
+        },
+        mounted() {
+            let userInfo = localStorage.getItem('userInfo')
+            userInfo = JSON.parse(userInfo)
+            this.codeForm.proxyId = userInfo.id
+        },
+        methods: {
+            submitForm(formName) {
+                this.$refs[formName].validate((valid) => {
+                    if (valid) {
+                        activeCode(this.codeForm).then(r => {
+                            if (r.code === 200) {
+                                this.$message.success('激活成功')
+                            } else {
+                                this.$message.error(r.message)
+                            }
+                        })
+                    } else {
+                        return false
+                    }
+                })
+            },
+            resetForm(formName) {
+                this.$refs[formName].resetFields()
+            }
+        }
     }
-  }
 </script>
 
 <style scoped>

@@ -1,15 +1,30 @@
 <template>
-  <el-form :model="ruleForm" status-icon :rules="rules"  ref="ruleForm" :size="this.GLOBAL.formSize()" label-width="100px" class="demo-ruleForm">
-    <el-form-item label="激活码类型" prop="oldpass">
-      <el-select v-model="ruleForm.type" placeholder="请选择">
-        <el-option label="周卡" value="1" > </el-option>
-        <el-option label="月卡" value="2" > </el-option>
-        <el-option label="季卡" value="3" > </el-option>
-        <el-option label="年卡" value="4" > </el-option>
+  <el-form
+:model="ruleForm"
+status-icon
+:rules="rules"
+ref="ruleForm"
+:size="this.GLOBAL.formSize()"
+           label-width="100px"
+class="demo-ruleForm">
+    <el-form-item label="激活码套餐" prop="oldpass">
+      <el-select @change="selectChanged" v-model="ruleForm.type" placeholder="请选择">
+        <el-option
+          v-for="item in records"
+          :key="item.id"
+          :price="item.price"
+          :activeDays="item.activeDays"
+          :royalty="item.royalty"
+          :label="item.name"
+          :value="item.id">
+        </el-option>
       </el-select>
     </el-form-item>
-    <el-form-item label="激活码价格" prop="newPass">
-      <label>123.00</label>
+    <el-form-item label="数量" prop="newPass">
+      <el-input-number @change="handleChanged"  v-model="ruleForm.count" autocomplete="off"></el-input-number>
+    </el-form-item>
+    <el-form-item label="价格" prop="newPass">
+      <label>{{ruleForm.total}}</label>
     </el-form-item>
     <el-form-item>
       <el-button type="primary" @click="submitForm('ruleForm')">购买</el-button>
@@ -18,61 +33,82 @@
 </template>
 
 <script>
-  import {addAmount} from "@/api/recharge";
+    import { buyCiphers, getList } from '../../../api/activeCode'
 
-  export default {
-    name: "ChangePass",
-    data() {
-      var validatePass = (rule, value, callback) => {
-        if (value === '') {
-          callback(new Error('请输入确认密码'));
-        } else {
-          if (this.ruleForm.newPass !== this.ruleForm.checkPass) {
-            callback(new Error('两次密码不一致'));
-          }
-          callback();
-        }
-      };
-      return {
-        ruleForm: {
-          oldPass: '',
-          newPass: '',
-          checkPass: ''
-        },
-        rules: {
-          oldPass: [
-            { required: false, message: '请输入原始密码', trigger: 'blur'  }
-          ],
-          newPass: [
-            { required: false, message: '请输入新密码', trigger: 'blur' },
-            { min: 6, max: 15, message: '长度在 6 到 15 个字符', trigger: 'blur' }
-          ],
-          checkPass: [
-            { validator: validatePass, trigger: 'blur' }
-          ]
-        }
-      };
-    },
-    methods: {
-      submitForm(formName) {
-        this.$refs[formName].validate((valid) => {
-          if (valid) {
-            let data = {
-
+    export default {
+        name: 'BuyCiphers',
+        data() {
+            return {
+                records: [],
+                ruleForm: {
+                    type: 1,
+                    count: 1,
+                    proxyId: 0,
+                    total: 0.0
+                },
+                rules: {
+                    type: [
+                        { required: false, message: '请选择套餐', trigger: 'blur' }
+                    ],
+                    count: [
+                        { required: false, message: '请输入数量', trigger: 'blur' }
+                    ]
+                }
             }
-              addAmount(data).then(r=>{
-              this.$message('修改成功')
+        },
+        mounted() {
+            let userInfo = localStorage.getItem('userInfo')
+            userInfo = JSON.parse(userInfo)
+            this.ruleForm.proxyId = userInfo.id
+            getList().then(r => {
+                if (r.code === 200) {
+                   this.records = r.records
+                }
             })
-          } else {
-            return false;
-          }
-        });
-      },
-      resetForm(formName) {
-        this.$refs[formName].resetFields();
-      }
+        },
+        methods: {
+            clcAmount() {
+                let price = 0.0
+                for (const i in this.records) {
+                    if (this.records[i].id === this.ruleForm.type) {
+                        console.log(this.records[i])
+                        price = this.records[i].price
+                        break
+                    }
+                }
+                return (price * this.ruleForm.count)
+            },
+
+            selectChanged(value) {
+                console.log(value)
+                this.ruleForm.total = this.clcAmount()
+                console.log(this.ruleForm.total)
+            },
+            handleChanged(value) {
+                console.log(value)
+                this.ruleForm.total = this.clcAmount()
+                console.log(this.ruleForm.total)
+            },
+            submitForm(formName) {
+                this.$refs[formName].validate((valid) => {
+                    if (valid) {
+                        buyCiphers(this.ruleForm).then(r => {
+                            if (r.code === 200) {
+                                this.$message.success(r.message)
+                            } else {
+                                this.$message.error(r.message)
+                            }
+                        })
+                    } else {
+                        return false
+                    }
+                })
+            },
+            resetForm(formName) {
+                this.$refs[formName].resetFields()
+            }
+        }
     }
-  }
 </script>
 
 <style scoped>

@@ -1,76 +1,78 @@
 <template>
-  <el-form :model="ruleForm" status-icon :rules="rules"  ref="ruleForm" :size="this.GLOBAL.formSize()" label-width="100px" class="demo-ruleForm">
-    <el-form-item label="转账账号" prop="oldpass">
-      <el-input type="password" v-model="ruleForm.mobile" autocomplete="off"></el-input>
+  <el-form
+:model="ruleForm"
+status-icon
+:rules="rules"
+ref="ruleForm"
+:size="this.GLOBAL.formSize()"
+           label-width="100px"
+class="demo-ruleForm">
+    <el-form-item label="转账账号" prop="mobile">
+      <el-input type="text" v-model="ruleForm.mobile" autocomplete="off"></el-input>
     </el-form-item>
     <el-form-item label="余额" prop="newPass">
-      <label>123.00</label>
+      <label>{{ruleForm.liveAmount}}</label>
     </el-form-item>
-    <el-form-item label="转账金额" prop="newPass">
-      <el-input type="password" v-model="ruleForm.amount" autocomplete="off"></el-input>
+    <el-form-item label="转账金额" prop="amount">
+      <el-input-number v-model="ruleForm.amount" autocomplete="off"></el-input-number>
     </el-form-item>
     <el-form-item>
-      <el-button type="primary" @click="submitForm('ruleForm')">激活</el-button>
+      <el-button type="primary" @click="submitForm('ruleForm')">提交</el-button>
     </el-form-item>
   </el-form>
 </template>
 
 <script>
-  import {addAmount} from "@/api/recharge";
+    // eslint-disable-next-line no-unused-vars
+    import { toRecharge } from '../../../api/activeCode'
 
-  export default {
-    name: "ChangePass",
-    data() {
-      var validatePass = (rule, value, callback) => {
-        if (value === '') {
-          callback(new Error('请输入确认密码'));
-        } else {
-          if (this.ruleForm.newPass !== this.ruleForm.checkPass) {
-            callback(new Error('两次密码不一致'));
-          }
-          callback();
-        }
-      };
-      return {
-        ruleForm: {
-          oldPass: '',
-          newPass: '',
-          checkPass: ''
-        },
-        rules: {
-          oldPass: [
-            { required: false, message: '请输入原始密码', trigger: 'blur'  }
-          ],
-          newPass: [
-            { required: false, message: '请输入新密码', trigger: 'blur' },
-            { min: 6, max: 15, message: '长度在 6 到 15 个字符', trigger: 'blur' }
-          ],
-          checkPass: [
-            { validator: validatePass, trigger: 'blur' }
-          ]
-        }
-      };
-    },
-    methods: {
-      submitForm(formName) {
-        this.$refs[formName].validate((valid) => {
-          if (valid) {
-            let data = {
-
+    export default {
+        name: 'UserRecharge',
+        data() {
+            return {
+                ruleForm: {
+                    mobile: '',
+                    amount: 0,
+                    proxyId: 0,
+                    liveAmount: 0
+                },
+                rules: {
+                    mobile: [
+                        { required: false, message: '请输入帐号', trigger: 'blur' }
+                    ],
+                    account: [
+                        { required: false, message: '请输入金额', trigger: 'blur' }
+                    ]
+                }
             }
-              addAmount(data).then(r=>{
-              this.$message('修改成功')
-            })
-          } else {
-            return false;
-          }
-        });
-      },
-      resetForm(formName) {
-        this.$refs[formName].resetFields();
-      }
+        },
+        mounted() {
+            let userInfo = localStorage.getItem('userInfo')
+            userInfo = JSON.parse(userInfo)
+            this.ruleForm.proxyId = userInfo.id
+            this.ruleForm.liveAmount = userInfo.money
+        },
+        methods: {
+            submitForm(formName) {
+                this.$refs[formName].validate((valid) => {
+                    if (valid) {
+                        toRecharge(this.ruleForm).then(r => {
+                            if (r.code === 200) {
+                                this.$message.success('激活成功')
+                            } else {
+                                this.$message.error(r.message)
+                            }
+                        })
+                    } else {
+                        return false
+                    }
+                })
+            },
+            resetForm(formName) {
+                this.$refs[formName].resetFields()
+            }
+        }
     }
-  }
 </script>
 
 <style scoped>
