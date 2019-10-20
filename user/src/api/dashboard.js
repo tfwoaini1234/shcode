@@ -2,11 +2,11 @@ import request from '@/utils/request'
 
 /**
  * Dashbord统计订单数量
- * @param params
  */
-export function getOrderCount() {
+export function getCount(params) {
   return request({
-    url: '/doctor/imageology-order/orderCount',
-    method: 'get'
+    url: '/proxy/active/count',
+    method: 'get',
+    params
   })
 }
