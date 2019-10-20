@@ -4,22 +4,18 @@
       <el-col :span="24">
         <el-form :inline="true" class="demo-form-inline" :size="this.GLOBAL.listSize()">
           <el-form-item>
-            <el-input v-model="search.patientName"  placeholder="激活码">
+            <el-input v-model="search.orderNo"  placeholder="订单号">
             </el-input>
           </el-form-item>
           <el-form-item>
-            <el-select v-model="search.type" style="width: 100px" placeholder="使用情况" >
-              <el-option  label="已使用" value="1"></el-option>
-              <el-option  label="未使用" value="2"></el-option>
+            <el-select v-model="search.status" style="width: 100px" placeholder="状态" >
+              <el-option  label="全部" value="0"></el-option>
+              <el-option  label="已发起" value="1"></el-option>
+              <el-option  label="已完成" value="2"></el-option>
             </el-select>
           </el-form-item>
           <el-form-item>
-            <el-select v-model="search.type" style="width: 100px" placeholder="类型" >
-              <el-option  label="周卡" value="1"></el-option>
-              <el-option  label="月卡" value="2"></el-option>
-              <el-option  label="季卡" value="3"></el-option>
-              <el-option  label="年卡" value="4"></el-option>
-            </el-select>
+            <el-button style="height: 28px;line-height: 13px" round @click="searchData">搜索</el-button>
           </el-form-item>
         </el-form>
       </el-col>
@@ -36,33 +32,41 @@
       :header-cell-style="this.GLOBAL.tableHeaderStyle"
       cell-class-name="table-cell"
     >
-
-      <el-table-column align="center" label="转账账号">
-        <template slot-scope="scope">
-          {{ scope.row.patientName }}
-        </template>
-      </el-table-column>
-      <el-table-column align="center"  label="转账金额">
+      <el-table-column align="center" label="订单号">
         <template slot-scope="scope">
           {{ scope.row.orderNo }}
         </template>
       </el-table-column>
-
-      <el-table-column align="center" label="转账时间" width="300">
+      <el-table-column align="center" label="状态">
+        <template slot-scope="scope">
+          {{ scope.row.status == 1?'已发起':'已完成' }}
+        </template>
+      </el-table-column>
+      <el-table-column align="center" label="接收人">
+        <template slot-scope="scope">
+          {{ getUserName(scope.row.toId) }}
+        </template>
+      </el-table-column>
+      <el-table-column align="center"  label="转账金额">
+        <template slot-scope="scope">
+          {{ scope.row.amount }}
+        </template>
+      </el-table-column>
+      <el-table-column align="center" label="激活时间" width="300">
         <template slot-scope="scope">
           {{ scope.row.addTime }}
         </template>
       </el-table-column>
-      <el-table-column
-        fixed="right"
-        align="center"
-        label="操作"
-        width="200">
-        <template slot-scope="scope">
-          <el-button @click="openEdit(scope.row)" type="text" size="small">编辑</el-button>
-          <el-button @click="openDelete(scope.row)" type="text" size="small">删除</el-button>
-        </template>
-      </el-table-column>
+      <!--      <el-table-column-->
+      <!--        fixed="right"-->
+      <!--        align="center"-->
+      <!--        label="操作"-->
+      <!--        width="200">-->
+      <!--        <template slot-scope="scope">-->
+      <!--          <el-button @click="openEdit(scope.row)" type="text" size="small">编辑</el-button>-->
+      <!--          <el-button @click="openDelete(scope.row)" type="text" size="small">删除</el-button>-->
+      <!--        </template>-->
+      <!--      </el-table-column>-->
     </el-table>
     <el-row>
       <el-col :span="24">
@@ -86,7 +90,7 @@
 </template>
 
 <script>
-    import { getList } from '@/api/active'
+    import { getList,getUserList } from '@/api/recharge'
     import Tools from '@/utils/tools'
     export default {
         name: "List",
@@ -101,6 +105,7 @@
         },
         data(){
             return {
+                userList:[],
                 showAdd:false,
                 showEdit:false,
                 item:{},
@@ -123,9 +128,25 @@
 
         },
         mounted(){
-            //this.fetchData()
+            this.fetchData()
+            this.getUserList()
         },
         methods:{
+            getUserName(id){
+                for(var k in this.userList){
+                    let item = this.userList[k]
+                    if(item.id = id){
+                        return item.nickname
+                    }
+                }
+                return "未知"
+            },
+            getUserList(){
+                getUserList().then(response => {
+                    const {records}  = response
+                    this.userList = records
+                })
+            },
             showAddHandel(){
                 this.showAdd = true;
             },
@@ -151,6 +172,9 @@
                 if(search){
                     Object.assign(param,search)
                 }
+                let userInfo = localStorage.getItem('userInfo')
+                userInfo = JSON.parse(userInfo)
+                param.proxyId = userInfo.id;
                 getList(param).then(response => {
                     const {records,total,size,current,searchCount,pages}  = response
                     this.page.total =total

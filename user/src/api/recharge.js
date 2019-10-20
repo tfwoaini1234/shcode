@@ -17,9 +17,21 @@ export function update(params) {
  */
 export function getList(params) {
   return request({
-    url: '/active/imageology-order',
+    url: '/proxy/recharge/list',
     method: 'get',
     params
+  })
+}
+
+/**
+ * 获取列表
+ * @param params
+ */
+export function getUserList() {
+  return request({
+    url: '/admin/user/all',
+    method: 'get',
+
   })
 }
 /**
@@ -51,8 +63,8 @@ export function getInfo(params) {
  */
 export function addAmount(data) {
   return request({
-    url: '/active/imageology-order',
-    method: 'psot',
+    url: '/admin/recharge',
+    method: 'post',
     data
   })
 }

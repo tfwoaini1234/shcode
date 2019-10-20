@@ -4,7 +4,7 @@
       <el-col :span="24">
         <el-form :inline="true" class="demo-form-inline" :size="this.GLOBAL.listSize()">
           <el-form-item>
-            <el-input v-model="search.patientName"  placeholder="订单号">
+            <el-input v-model="search.orderNo"  placeholder="订单号">
             </el-input>
           </el-form-item>
           <el-form-item>
