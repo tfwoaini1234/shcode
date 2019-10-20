@@ -15,46 +15,54 @@
           </div>
           <div class="total">
             <el-row :gutter="20">
-              <el-col :md="12" :lg="8">
+
+              <el-col :md="12" :lg="6">
                 <el-card shadow="never">
-                  <div class="icon">
+                  <div class="icon" style="background: #2589F9">
                     <i class="iconfont icon-dayview"></i>
                   </div>
                   <div class="count">
-                    <span class="nb">{{dayServiceCount}}</span>
-                    <span class="fg">|</span>
-                    <span class="nb">{{dayVerifyCount}}</span>
-                  </div>
-<!--                  <span class="ttm">今日</span>-->
-                  <label>总激活数</label>
-                </el-card>
-              </el-col>
-              <el-col :md="12" :lg="8">
-                <el-card shadow="never">
-                  <div class="icon" style="background: #2589F9">
-                    <i class="iconfont icon-weeklyview"></i>
-                  </div>
-                  <div class="count">
-                    <span class="nb">{{weekServiceCount}}</span>
-                    <span class="fg">|</span>
-                    <span class="nb">{{weekVerifyCount}}</span>
+                    <span class="nb">{{dayCount}}</span>
                   </div>
 <!--                  <span class="ttm">本周</span>-->
                   <label>今日激活数</label>
                 </el-card>
               </el-col>
-              <el-col :md="12" :lg="8">
+              <el-col :md="12" :lg="6">
+                <el-card shadow="never">
+                  <div class="icon">
+                    <i class="iconfont icon-monthlyview"></i>
+                  </div>
+                  <div class="count">
+                    <span class="nb">{{dayAllCount}}</span>
+                  </div>
+                  <!--                  <span class="ttm">今日</span>-->
+                  <label>总激活数</label>
+                </el-card>
+              </el-col>
+
+              <el-col :md="12" :lg="6">
+                <el-card shadow="never">
+                  <div class="icon" style="background: #4CB560">
+                    <i class="iconfont icon-dayview"></i>
+                  </div>
+                  <div class="count">
+                    <span class="nb">{{ddayCount}}</span>
+                  </div>
+                  <!--                  <span class="ttm">本月</span>-->
+                  <label>代理今日激活数</label>
+                </el-card>
+              </el-col>
+              <el-col :md="12" :lg="6">
                 <el-card shadow="never">
                   <div class="icon" style="background: #4CB560">
                     <i class="iconfont icon-monthlyview"></i>
                   </div>
                   <div class="count">
-                    <span class="nb">{{monthServiceCount}}</span>
-                    <span class="fg">|</span>
-                    <span class="nb">{{monthVerifyCount}}</span>
+                    <span class="nb">{{ddayAllCount}}</span>
                   </div>
-<!--                  <span class="ttm">本月</span>-->
-                  <label>代理激活数</label>
+                  <!--                  <span class="ttm">本月</span>-->
+                  <label>代理激活总数</label>
                 </el-card>
               </el-col>
             </el-row>
@@ -65,7 +73,7 @@
           <div class="card-header">
             <el-row :gutter="20">
               <el-col :span="12">
-                <div class="tll">待处理任务</div>
+                <div class="tll">激活列表</div>
               </el-col>
               <el-col :span="12">
 
@@ -134,13 +142,13 @@
             <div class="card-header">
               <el-row :gutter="30">
                 <el-col :span="12">
-                  <div class="tll">日历查询</div>
+                  <div class="tll"></div>
                 </el-col>
               </el-row>
             </div>
 
-            <el-calendar v-model="date">
-            </el-calendar>
+<!--            <el-calendar v-model="date">-->
+<!--            </el-calendar>-->
           </div>
         </div>
       </el-col>
@@ -151,20 +159,18 @@
 
 <script>
   import { mapGetters } from 'vuex'
-  import DicomList from "./components/DicomList"
-  import { getOrderCount } from '@/api/dashboard'
+  import DicomList from "../active/components/DicomList"
+  import { getCount } from '@/api/dashboard'
   export default {
     name: 'Dashboard',
     components: {DicomList},
     data(){
       return {
         date:null,
-        monthServiceCount:0,
-        monthVerifyCount:0,
-        weekServiceCount:0,
-        weekVerifyCount:0,
-        dayVerifyCount:0,
-        dayServiceCount:0
+          dayCount:0,
+          ddayCount:0,
+          ddayAllCount:0,
+          dayAllCount:0,
       }
     },
     mounted(){
@@ -172,14 +178,12 @@
     },
     methods:{
       fetchCount(){
-        getOrderCount().then((res)=>{
-          const {monthServiceCount, monthVerifyCount, weekServiceCount,weekVerifyCount, dayVerifyCount, dayServiceCount} = res
-          this.monthServiceCount = monthServiceCount
-          this.monthVerifyCount=monthVerifyCount
-          this.weekServiceCount=weekServiceCount
-          this.weekVerifyCount=weekVerifyCount
-          this.dayVerifyCount = dayVerifyCount
-          this.dayServiceCount=dayServiceCount
+        getCount().then((res)=>{
+          const {dayCount, ddayCount, ddayAllCount,dayAllCount} = res
+            this.dayCount = dayCount;
+            this.ddayCount = ddayCount;
+            this.ddayAllCount = ddayAllCount;
+            this.dayAllCount = dayAllCount;
         })
       },
     },

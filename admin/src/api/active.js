@@ -36,3 +36,15 @@ export function getUserList(params) {
     params
   })
 }
+
+/**
+ * 切换绑定
+ * @param data
+ */
+export function changeBind(data) {
+  return request({
+    url: '/admin/active/changeBind',
+    method: 'post',
+    data
+  })
+}

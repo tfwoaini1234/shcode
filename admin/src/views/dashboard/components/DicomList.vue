@@ -8,8 +8,8 @@
               <div>
                 <el-avatar :size="50">
                   <span slot="default">
-                    <img v-if="item.patientSex==1" width="100%" src="@/assets/male.png"/>
-                    <img v-if="item.patientSex==2" width="100%" src="@/assets/female.png"/>
+<!--                    <img v-if="item.patientSex==1" width="100%" src="@/assets/male.png"/>-->
+<!--                    <img v-if="item.patientSex==2" width="100%" src="@/assets/female.png"/>-->
                   </span>
                 </el-avatar>
               </div>
@@ -62,7 +62,7 @@
         </el-row>
       </div>
     </div>
-    <empty v-if="list.length==0" title="暂无相关任务"></empty>
+    <empty v-if="list.length==0" title=""></empty>
   </div>
 </template>
 
@@ -137,7 +137,7 @@
       }
     },
     mounted(){
-      this.fetchData(this.search)
+      // this.fetchData(this.search)
     },
     methods:{
       fetchData(search) {
