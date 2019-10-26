@@ -14,7 +14,7 @@
             <div class="avatar-wrapper">
               <el-avatar class="avatar" :size="34">
                 <span slot="default">
-                  <img  src="@/assets/logo.jpg"  width="100%" />
+                  <img  src="@/assets/logo.png"  width="100%" />
                 </span>
               </el-avatar>
             </div>

@@ -31,7 +31,7 @@ export default {
   data() {
     return {
       title:Setting.title,
-      logo: '/assets/logo.jpg'
+      logo: '/assets/logo.png'
     }
   }
 }

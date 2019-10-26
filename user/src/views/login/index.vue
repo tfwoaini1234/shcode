@@ -19,10 +19,10 @@
       <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" auto-complete="on" label-position="left">
 
         <div class="title-container">
-          <h3 class="title">登录系统</h3>
+          <h3 class="title">云尚清粉代理后台系统登录</h3>
         </div>
         <div class="form-content">
-          <div class="tpp">请使用手机号码和密码<br>登录系统</div>
+<!--          <div class="tpp">请使用手机号码和密码<br>登录系统</div>-->
           <el-form-item prop="username">
         <span class="svg-container">
           <svg-icon icon-class="user" />
@@ -66,7 +66,7 @@
                 <div>&nbsp;</div>
               </el-col>
               <el-col :span="12">
-                <div class="align-right"> <a href="#">找回密码</a></div>
+<!--                <div class="align-right"> <a href="#">找回密码</a></div>-->
               </el-col>
             </el-row>
           </div>
@@ -74,7 +74,7 @@
       </el-form>
     </div>
     <div class="bottom">
-      Copyright  ©  2018 - {{new Date().getFullYear()}} 青耕鸟. All Rights Reserved. 版权所有
+      Copyright  ©  2018 - {{new Date().getFullYear()}} 云尚. All Rights Reserved. 版权所有
     </div>
   </div>
 </template>
@@ -101,8 +101,8 @@
             }
             return {
                 loginForm: {
-                    username: '13880311555',
-                    password: '123456'
+                    username: '',
+                    password: ''
                 },
                 loginRules: {
                     username: [{ required: true, trigger: 'blur', validator: validateUsername }],
