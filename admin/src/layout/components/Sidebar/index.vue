@@ -32,6 +32,11 @@ export default {
           asyncRoutes :JSON.parse(localStorage.getItem('accessRoutes')),
       }
     },
+    mounted() {
+        if (localStorage.getItem('accessRoutes') == null) {
+            location.reload()
+        }
+    },
   computed: {
     ...mapGetters([
       'permission_routes',
