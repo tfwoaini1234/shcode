@@ -40,12 +40,14 @@
       </el-table-column>
       <el-table-column align="center"  label="是否激活">
         <template slot-scope="scope">
-          {{ scope.row.isActive == 1?'激活':'未激活' }}
+
+          {{ scope.row.isActive == 'True'?'激活':'未激活' }}
         </template>
       </el-table-column>
       <el-table-column align="center"  label="是否销售">
         <template slot-scope="scope">
-          {{ scope.row.isSale == 1?'销售':'未销售' }}
+          {{ scope.row.isSale == 'True'?'销售':'未销售' }}
+
         </template>
       </el-table-column>
       <el-table-column align="center"  label="代理人">

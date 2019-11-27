@@ -1,83 +1,105 @@
 <template>
-  <div class="main-box" id="editBox">
-    <el-form ref="form" label-width="80px" :size="this.GLOBAL.formSize()">
-      <el-form-item label="姓名">
-        <el-input type="text" v-model="form.name"></el-input>
+  <div class="main-box" id="editBox" style="margin: 0px 20px 10px 20px">
+    <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
+      <el-form-item label="手机号" prop="phoneNumber">
+        <el-input v-model="ruleForm.phoneNumber"></el-input>
       </el-form-item>
-      <el-form-item label="手机号">
-        <el-input type="text" v-model="form.mobile"></el-input>
-      </el-form-item>
-      <el-form-item label="密码">
-        <el-input type="password" v-model="form.password"></el-input>
-      </el-form-item>
-      <el-form-item label="状态">
-        <el-select placeholder="请设置用户状态" v-model="form.status">
-          <el-option key="1" label="正常" :value="1"></el-option>
-          <el-option key="2" label="锁定" :value="2"></el-option>
-        </el-select>
+      <el-form-item label="预设密码">
+        <el-input v-model="ruleForm.password"></el-input>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="onSubmit" :loading="submitLoading">保存</el-button>
-        <el-button @click="onCancel()">取消</el-button>
+        <el-button type="primary" @click="submitForm('ruleForm')">创建</el-button>
+        <el-button @click="resetForm('ruleForm')">重置</el-button>
       </el-form-item>
     </el-form>
   </div>
 </template>
 
 <script>
-  import { save,getInfo } from '@/api/agent'
-  import { Loading } from 'element-ui'
-  export default {
-    name: "add",
-    props:{
-      parent:Object,
-    },
-    data(){
-      return{
-        submitLoading: false,
-        roleList:[],
-        form:{
+    import { save, getInfo } from '@/api/agent'
+    // eslint-disable-next-line no-unused-vars
+    import { Loading } from 'element-ui'
+    export default {
+        name: 'Add',
+        props: {
+            parent: Object
+        },
+        data() {
+            return {
+                submitLoading: false,
+                roleList: [],
+                ruleForm: {
+                    phoneNumber: '',
+                    password: ''
+                },
+                rules: {
+                    phoneNumber: [
+                        { required: true, message: '请输入手机号码', trigger: 'blur' },
+                        { min: 11, max: 11, message: '长度不够', trigger: 'blur' }
+                    ]
+                }
+            }
+        },
+        mounted() {
+        },
+        methods: {
+            sexFilterSex(sex) {
+                const statusMap = {
+                    1: '男',
+                    2: '女',
+                    3: '保密'
+                }
+                return statusMap[sex]
+            },
+            fetchData() {
+                // let loadingInstance = Loading.service({target:'#editBox'});
+                const formItem = {}
+                this.form = Object.assign(formItem, this.item)
 
+                getInfo().then((res) => {
+                    this.roleList = res
+                    // loadingInstance.close()
+                })
+            },
+            submitForm(formName) {
+                this.$refs[formName].validate((valid) => {
+                    if (valid) {
+                        this.submitLoading = true
+                        const param = this.ruleForm
+                        if (!param.password) {
+                            param.password = 123456
+                        }
+                        param.username = param.phoneNumber
+                        param.proxy = 1
+                        const user = JSON.parse(localStorage.getItem('userInfo'))
+                        param.createId = user.id
+                        save(param).then((r) => {
+                            this.submitLoading = false
+                            if (r.code == 200) {
+                                this.$message('添加成功')
+                                this.parent.$refs.addBox.closeDrawer()
+                                this.$emit('success')
+                            } else {
+                                this.$message.error(r.message)
+                                this.$emit('error')
+                            }
+                        }).catch(() => {
+                            this.submitLoading = false
+                        })
+                    } else {
+                        console.log('error submit!!')
+                        return false
+                    }
+                })
+            },
+            resetForm(formName) {
+                this.$refs[formName].resetFields()
+            },
+            onCancel() {
+                this.parent.$refs.addBox.closeDrawer()
+            }
         }
-      }
-    },
-    mounted(){
-      this.fetchData()
-    },
-    methods:{
-      sexFilterSex(sex) {
-        const statusMap = {
-          1: '男',
-          2: '女',
-          3: '保密'
-        }
-        return statusMap[sex]
-      },
-      fetchData(){
-        // let loadingInstance = Loading.service({target:'#editBox'});
-        let formItem = {}
-        this.form = Object.assign(formItem,this.item)
-
-        getInfo().then((res)=>{
-          this.roleList = res
-          // loadingInstance.close()
-        })
-      },
-      onSubmit(){
-        this.submitLoading = true
-        let param = this.form
-        delete param['createTime']
-          save(param).then(()=>{
-          this.submitLoading = false
-          this.parent.fetchTree()
-          this.$message('修改成功')
-        })
-      },
-      onCancel(){
-        this.parent.$refs.editBox.closeDrawer()
-      }
     }
-  }
 </script>
 
 <style scoped>

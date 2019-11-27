@@ -26,42 +26,43 @@
   import { mapGetters } from 'vuex'
   import DicomList from './components/DicomList'
   import Setting from './components/Setting'
-  import DicomTypeList from "./components/DicomTypeList";
 
   export default {
 
-    components:{
-      DicomTypeList,
+    components: {
+        // eslint-disable-next-line vue/no-unused-components
       DicomList,
         Setting
     },
     data() {
       return {
-        activeName:'0',
-        activeType:'0',
-        readCount:0,
-        reviewCount:0
+        activeName: '0',
+        activeType: '0',
+        readCount: 0,
+        reviewCount: 0
       }
     },
 
     methods: {
-      changeType(tab){
+      changeType(tab) {
         this.activeType = tab
-        this.$refs['listTypeItem'+tab].fetatchLoad()
+        this.$refs['listTypeItem' + tab].fetatchLoad()
       },
-      handleTabClick(item){
-        if(item=='0'){
+      handleTabClick(item) {
+          // eslint-disable-next-line eqeqeq
+        if (item == '0') {
           this.changeType('0')
         }
-        if(item=='1') {
-          let name = 'listItem' + item.index
+          // eslint-disable-next-line eqeqeq
+        if (item == '1') {
+          const name = 'listItem' + item.index
           this.$refs[name].fetatchLoad()
         }
       },
-      readOnLoad(total){
+      readOnLoad(total) {
         this.readCount = total
       },
-      reviewOnLoad(total){
+      reviewOnLoad(total) {
         this.reviewCount = total
       }
     },

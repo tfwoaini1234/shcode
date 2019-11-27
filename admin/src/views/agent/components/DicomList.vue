@@ -22,6 +22,7 @@
     <el-drawer
       ref="addBox"
       title="新增用户"
+      size="80%"
       :visible.sync="showAdd"
       direction="rtl"
 
@@ -69,10 +70,9 @@
         </template>
       </el-table-column>
       <el-table-column
-        fixed="right"
         align="center"
         label="操作"
-        width="200">
+        width="80">
         <template slot-scope="scope">
 <!--          <el-button @click="openEdit(scope.row)" type="text" size="small">编辑</el-button>-->
           <el-button @click="openDelete(scope.row)" type="text" size="small">删除</el-button>
@@ -116,7 +116,7 @@
         filters: {
 
         },
-        components:{Add,Edit},
+        components:{ Add,Edit},
         data(){
             return {
                 showAdd:false,

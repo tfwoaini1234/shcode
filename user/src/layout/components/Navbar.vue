@@ -63,69 +63,9 @@
         this.$store.dispatch('app/toggleSideBar')
       },
       async logout() {
-        await this.$store.dispatch('user/logout')
-        this.$router.push(`/login?redirect=${this.$route.fullPath}`)
+          localStorage.clear()
+          this.$router.push(`/login?redirect=${this.$route.fullPath}`)
       },
-      // webSocketMessage() {
-      //   if ("WebSocket" in window) {
-      //     let URL = process.env.VUE_APP_BASE_API
-      //     URL = URL.replace('http:','ws:')
-      //     URL = URL.replace('https:','ws:')
-      //     // 打开一个 web socket
-      //     ws = new WebSocket(URL+"/websocket/"+getToken());
-      //     ws.onopen =()=> {
-      //       //ws.send("发送数据")
-      //       console.log("数据发送中...")
-      //     };
-      //
-      //     ws.onmessage = (evt)=> {
-      //
-      //       let msg = evt.data
-      //       if(msg && msg.trim()!='') {
-      //         try {
-      //           let received_msg = JSON.parse(msg)
-      //           if (received_msg && received_msg.msgType) {
-      //             let item={}
-      //             if(received_msg.title && received_msg.title.length>10){
-      //               item.title = received_msg.title.substring(0,10)
-      //             }else{
-      //               item.title = received_msg.title
-      //             }
-      //             item.msgType = received_msg.msgType
-      //             this.msgList.push(item)
-      //             switch (item.msgType) {
-      //               case 1://系统消息
-      //                 this.$notify.info({
-      //                   title: '系统消息',
-      //                   message: item.title
-      //                 })
-      //                 break;
-      //               case 2://业务消息
-      //                 this.$notify.info({
-      //                   title: '业务消息',
-      //                   message: item.title
-      //                 })
-      //                 break;
-      //             }
-      //           }
-      //         }catch (e) {
-      //           console.log('解析字符串失败')
-      //         }
-      //       }
-      //       console.log("数据已接收..."+msg)
-      //     }
-      //     ws.onerror=()=>{
-      //       console.log("连接出错了...")
-      //     }
-      //     ws.onclose =()=> {
-      //       console.log("连接已关闭...")
-      //     }
-      //   }
-      //   else {
-      //     // 浏览器不支持 WebSocket
-      //     alert("您的浏览器不支持 WebSocket!");
-      //   }
-      // },
       msgClick(command){
         if(command!='empty') {
           setTimeout(()=>{

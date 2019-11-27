@@ -109,7 +109,7 @@ export const asyncRoutes = [
         path: 'index',
         name: 'activeCodeIndex',
         component: () => import('@/views/activeCode/index'),
-        meta: { title: '激活码', icon: 'form'}
+        meta: { title: '激活码', icon: 'form' }
       }
     ]
   },
@@ -122,7 +122,6 @@ export const asyncRoutes = [
       {
         path: 'index',
         name: 'agentIndex',
-        hidden:true,
         component: () => import('@/views/agent/index'),
         meta: {
           title: '代理管理', icon: 'user'

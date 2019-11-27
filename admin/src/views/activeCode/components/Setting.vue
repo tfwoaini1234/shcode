@@ -34,7 +34,7 @@
     import {update,getList} from "@/api/activeCode";
 
     export default {
-        name: "ChangePass",
+        name: 'SetActiveCode',
         data() {
 
             var validatePass = (rule, value, callback) => {

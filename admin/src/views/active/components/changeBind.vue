@@ -7,7 +7,7 @@
       <el-input type="text" style="width: 200px;" v-model="ruleForm.mobile" autocomplete="off"></el-input>
     </el-form-item>
     <el-form-item>
-      <el-button type="primary" @click="submitForm('ruleForm')">切换绑定</el-button>
+      <el-button type="primary" @click="submitForm('ruleForm')">重置</el-button>
     </el-form-item>
   </el-form>
 </template>
@@ -58,7 +58,7 @@
 
               changeBind(data).then(r=>{
                   if(r.code == 200){
-                      this.$message.success('切换成功')
+                      this.$message.success('重置成功')
                       this.ruleForm = {
                           code:'',
                           mobile:''

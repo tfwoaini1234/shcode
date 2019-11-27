@@ -37,7 +37,7 @@
     components: {Preference, AddAmount,List},
     data() {
       return {
-        activeName: 'first',
+        activeName: 'first'
       }
     },
     created() {

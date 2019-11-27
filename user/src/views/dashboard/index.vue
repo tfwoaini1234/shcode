@@ -157,13 +157,13 @@
                 }
                 let userInfo = localStorage.getItem('userInfo')
                 userInfo = JSON.parse(userInfo)
-                param.proxyId = userInfo.id;
-                getCount(param).then((res)=>{
-                    const {dayCount, ddayCount, ddayAllCount,dayAllCount} = res
-                    this.dayCount = dayCount;
-                    this.ddayCount = ddayCount;
-                    this.ddayAllCount = ddayAllCount;
-                    this.dayAllCount = dayAllCount;
+                param.proxyId = userInfo.id
+                getCount(param).then((res) => {
+                    const { dayCount, ddayCount, ddayAllCount,dayAllCount } = res
+                    this.dayCount = dayCount
+                    this.ddayCount = ddayCount
+                    this.ddayAllCount = ddayAllCount
+                    this.dayAllCount = dayAllCount
                 })
             },
         },

@@ -19,7 +19,7 @@
       <el-tab-pane label="代理激活记录" name="1">
         <dicom-list2 ref="listItem2" status="20,30,40"></dicom-list2>
       </el-tab-pane>
-      <el-tab-pane label="切换绑定" name="2">
+      <el-tab-pane label="重置" name="2">
         <change-bind ref="listItem3" status="20,30,40"></change-bind>
       </el-tab-pane>
     </el-tabs>

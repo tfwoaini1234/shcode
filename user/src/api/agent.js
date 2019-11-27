@@ -17,7 +17,7 @@ export function update(params) {
  */
 export function getList(params) {
   return request({
-    url: '/active/imageology-order',
+    url: '/proxy/user/List',
     method: 'get',
     params
   })
@@ -45,3 +45,12 @@ export function getInfo(params) {
     params
   })
 }
+
+export function save(data) {
+  return request({
+    url: '/admin/register',
+    method: 'post',
+    data
+  })
+}
+

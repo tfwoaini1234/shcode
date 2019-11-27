@@ -1,27 +1,32 @@
 <template>
   <div>
     <div style="margin-bottom:20px;">
-      <el-dropdown  @command="handleCommand">
+      <el-dropdown @command="handleCommand">
         <el-button type="primary">
           新增<i class="el-icon-arrow-down el-icon--right"></i>
         </el-button>
         <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item v-for="(item,index) in typeList" :command="item.id" :key="index" >{{item.name}}激活码</el-dropdown-item>
+          <el-dropdown-item v-for="(item,index) in typeList" :command="item.id" :key="index">{{item.name}}激活码
+          </el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
     </div>
     <el-row>
-      <el-col :span="24">
-        <el-form :inline="true" class="demo-form-inline" :size="this.GLOBAL.listSize()">
+
+        <el-form  >
+          <el-col :span="18">
           <el-form-item>
-            <el-input v-model="search.cipher"  placeholder="激活码">
+            <el-input v-model="search.cipher" placeholder="激活码,多个请用逗号隔开">
             </el-input>
           </el-form-item>
-          <el-form-item>
-            <el-button style="height: 28px;line-height: 13px" round @click="searchData">搜索</el-button>
+          </el-col>
+          <el-col :span="6">
+          <el-form-item >
+              <el-button  icon="el-icon-search" round @click="searchData">搜索</el-button>
           </el-form-item>
+          </el-col>
         </el-form>
-      </el-col>
+
     </el-row>
     <el-table
       ref="listTable"
@@ -41,56 +46,56 @@
           {{ scope.row.cipher }}
         </template>
       </el-table-column>
-      <el-table-column align="center"  label="激活码类型">
+      <el-table-column align="center" label="激活码类型">
         <template slot-scope="scope">
           {{getTypeName(scope.row.type)}}
         </template>
       </el-table-column>
-      <el-table-column align="center"  label="是否激活">
+      <el-table-column align="center" label="是否激活">
         <template slot-scope="scope">
-          {{ scope.row.isActive == 1?'激活':'未激活' }}
+          {{ scope.row.isActive == 'True'?'激活':'未激活' }}
         </template>
       </el-table-column>
-      <el-table-column align="center"  label="是否销售">
+      <el-table-column align="center" label="是否销售">
         <template slot-scope="scope">
-          {{ scope.row.isSale == 1?'销售':'未销售' }}
+          {{ scope.row.isSale == 'True'?'销售':'未销售' }}
         </template>
       </el-table-column>
-      <el-table-column align="center"  label="代理人">
+      <el-table-column align="center" label="代理人">
         <template slot-scope="scope">
           {{getUserName(scope.row.proxyId)}}
         </template>
       </el-table-column>
-      <el-table-column align="center"  label="绑定人">
+      <el-table-column align="center" label="绑定人">
         <template slot-scope="scope">
           {{getUserName(scope.row.bindId)}}
         </template>
       </el-table-column>
-      <el-table-column align="center"  label="有效期">
+      <el-table-column align="center" label="有效期">
         <template slot-scope="scope">
           {{ scope.row.activeDays }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="销售时间" >
+      <el-table-column align="center" label="销售时间">
         <template slot-scope="scope">
           {{ scope.row.saleTime }}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="激活时间" >
+      <el-table-column align="center" label="激活时间">
         <template slot-scope="scope">
           {{ scope.row.activeTime }}
         </template>
       </el-table-column>
 
-<!--      <el-table-column-->
-<!--        fixed="right"-->
-<!--        align="center"-->
-<!--        label="操作"-->
-<!--        width="100">-->
-<!--        <template slot-scope="scope">-->
-<!--          <el-button @click="openDelete(scope.row)" type="text" size="small">删除</el-button>-->
-<!--        </template>-->
-<!--      </el-table-column>-->
+      <!--      <el-table-column-->
+      <!--        fixed="right"-->
+      <!--        align="center"-->
+      <!--        label="操作"-->
+      <!--        width="100">-->
+      <!--        <template slot-scope="scope">-->
+      <!--          <el-button @click="openDelete(scope.row)" type="text" size="small">删除</el-button>-->
+      <!--        </template>-->
+      <!--      </el-table-column>-->
     </el-table>
     <el-row>
       <el-col :span="24">
@@ -109,125 +114,124 @@
       </el-col>
     </el-row>
 
-
   </div>
 </template>
 
 <script>
-    import { getCodeList,getList,addCode,getUserList } from '@/api/activeCode'
+    import { getCodeList, getList, addCode, getUserList } from '@/api/activeCode'
     import Tools from '@/utils/tools'
 
     export default {
-        name: "List",
-        props:{
-            status:{
+        name: 'List',
+        props: {
+            status: {
                 type: String,
-                default:''
+                default: ''
             }
         },
-        filters: {
-
-        },
-        data(){
+        filters: {},
+        data() {
             return {
-                typeList:[],
-                userList:[],
-                search:{
-
-                },
-                page:{
-                    size:this.GLOBAL.pageSize(),
-                    current:1,
-                    total:0
+                typeList: [],
+                userList: [],
+                search: {},
+                page: {
+                    size: this.GLOBAL.pageSize(),
+                    current: 1,
+                    total: 0
                 },
                 list: null,
                 listLoading: false,
-                orderTypeList:[],
-                orderCheckpointList:[],
-                orderGradeList:[]
+                orderTypeList: [],
+                orderCheckpointList: [],
+                orderGradeList: []
             }
         },
         created() {
 
         },
-        mounted(){
+        mounted() {
             this.getList()
             this.getUserList()
             this.fetchData()
         },
-        methods:{
-            getUserList(){
-                getUserList().then((r)=>{
+        methods: {
+            getUserList() {
+                getUserList().then((r) => {
                     this.userList = r.records
                 })
             },
-            getUserName(id){
-                for(var k in this.userList){
-                    let item = this.userList[k]
-                    if(item.id == id){
+            getUserName(id) {
+                for (var k in this.userList) {
+                    const item = this.userList[k]
+                    // eslint-disable-next-line eqeqeq
+                    if (item.id == id) {
                         return item.nickname
                     }
                 }
                 return '未知'
             },
-            getTypeName(id){
-                for(var k in this.typeList){
-                    let item = this.typeList[k]
-                    if(item.id == id){
-                        return item.nickname
+            getTypeName(id) {
+                for (const k in this.typeList) {
+                    const item = this.typeList[k]
+                    // eslint-disable-next-line eqeqeq
+                    if (item.id == id) {
+                        return item.name
                     }
                 }
                 return '未知'
             },
-            getList(){
-                getList().then((r)=>{
+            getList() {
+                getList().then((r) => {
                     const {records} = r
                     this.typeList = records
                 })
             },
-            handleCommand(value){
-                let userInfo = JSON.parse(localStorage.getItem('userInfo'))
-                let data={
-                    adminId:userInfo.id,
-                    typeId:value
-                };
+            handleCommand(value) {
+                const userInfo = JSON.parse(localStorage.getItem('userInfo'))
+                const data = {
+                    adminId: userInfo.id,
+                    typeId: value
+                }
 
                 addCode(data).then(response => {
-                    if(response.code == 200){
+                    if (response.code == 200) {
                         this.$message('新增成功')
                         this.fetchData()
-                    }else{
+                    } else {
                         this.$message(response.message)
                     }
                 })
             },
-            openDelete(row){
-                alert("删除了")
+            openDelete(row) {
+                alert('删除了')
             },
             fetchData(search) {
                 this.listLoading = true
-                let param = {
+                const param = {
                     pageSize: this.page.size,
                     pageNum: this.page.current
                 }
-                if(search){
-                    Object.assign(param,search)
+                if (search) {
+                    Object.assign(param, search)
                 }
                 getCodeList(param).then(response => {
-                    const {records,total,size,current,searchCount,pages}  = response
+                    // eslint-disable-next-line no-unused-vars
+                    const { records, total, size, current, searchCount, pages} = response
                     console.log(total)
-                    this.page.total =total
+                    this.page.total = total
                     this.list = records
                     this.listLoading = false
                     this.$refs['listTable'].doLayout()
-                    this.$emit('load',total)
+                    this.$emit('load', total)
                 })
             },
-            searchData(){
-                let search = Object.assign({},this.search)
-                if(search.daterange && search.daterange.length==2){
-                    search.timeFrom =Tools.dateFormat(search.daterange[0],'yyyy-MM-dd')
-                    search.timeTo =  Tools.dateFormat(search.daterange[1],'yyyy-MM-dd')
+            searchData() {
+                const search = Object.assign({}, this.search)
+                // eslint-disable-next-line eqeqeq
+                if (search.daterange && search.daterange.length == 2) {
+                    search.timeFrom = Tools.dateFormat(search.daterange[0], 'yyyy-MM-dd')
+                    search.timeTo = Tools.dateFormat(search.daterange[1], 'yyyy-MM-dd')
                 }
                 this.fetchData(search)
             },
@@ -241,7 +245,7 @@
                 this.searchData()
             },
             openEdit(row) {
-                this.$router.push({ path:'/dicom/show/'+row.orderNo})
+                this.$router.push({ path: '/dicom/show/' + row.orderNo })
             }
         },
         computed: {
@@ -251,7 +255,7 @@
         },
         watch: {
             States(val) {
-                //console.log(val)
+                // console.log(val)
             }
         }
     }

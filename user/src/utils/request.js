@@ -1,11 +1,11 @@
 import axios from 'axios'
-import { MessageBox, Message } from 'element-ui'
+import {MessageBox, Message} from 'element-ui'
 import store from '@/store'
-import { getToken } from '@/utils/auth'
+import {getToken} from '@/utils/auth'
 import Qs from 'qs'
 // create an axios instance
 const service = axios.create({
-  baseURL: 'http://159.138.135.12:8080', // url = base url + request url
+  baseURL: 'http://103.90.136.251:8080', // url = base url + request url
   // withCredentials: true, // send cookies when cross-domain requests
   timeout: 6000, // request timeout
   transformRequest: [function (data) {
@@ -56,14 +56,14 @@ service.interceptors.response.use(
   },
   error => {
     console.log('server err:' + error) // for debug
-    let msg='系统未知错误'
-    if(error && error.response){
+    let msg = '系统未知错误'
+    if (error && error.response) {
       switch (error.response.status) {
         case 400:
-          msg='错误请求'
+          msg = '错误请求'
           break;
         case 401:
-          msg='未授权，请重新登录'
+          msg = '未授权，请重新登录'
           MessageBox.confirm('登录信息已过期, 您可以注销登录或者重新登录系统', '注销确认', {
             confirmButtonText: '重新登录',
             cancelButtonText: '取消',
@@ -76,20 +76,20 @@ service.interceptors.response.use(
 
           break;
         case 403:
-          msg='拒绝访问'
+          msg = '拒绝访问'
           break;
         case 404:
-          msg='错误请求，未找到改资源'
+          msg = '错误请求，未找到改资源'
           break;
         case 405:
-          msg='请求方法不允许'
+          msg = '请求方法不允许'
           break;
         case 408:
-          msg='请求超时'
+          msg = '请求超时'
           break;
         case 500:
-          if(error.response.data && error.response.data.message){
-            msg=error.response.data.message
+          if (error.response.data && error.response.data.message) {
+            msg = error.response.data.message
           }
           break;
       }
